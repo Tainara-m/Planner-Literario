@@ -1,0 +1,1539 @@
+/* ============================================================
+   VARIÁVEIS GLOBAIS — paleta de cores e tokens de design
+   ============================================================ */
+:root {
+  --primary:    #7c6aa5;   /* Roxo principal */
+  --secondary:  #FCBAD3;   /* Rosa claro */
+  --tertiary:   #D5AAFF;   /* Lavanda */
+  --accent:     #8867d6;   /* Roxo vibrante */
+  --dark-accent: #701188;  /* Roxo escuro para detalhes */
+  --neutral:    #F5F2ED;   /* Fundo creme */
+  --text-dark:  #3a2f5e;   /* Texto escuro */
+  --text-mid:   #738aa1;   /* Texto intermediário */
+  --white:      #ffffff;
+  --glass:      rgba(255,255,255,0.18);   /* Vidro claro */
+  --glass-dark: rgba(60,40,100,0.18);    /* Vidro escuro */
+  --shadow:     rgba(120,90,180,0.18);   /* Sombra roxa suave */
+  --radius:     14px;      /* Raio padrão de bordas */
+  --radius-pill:50px;      /* Raio pílula */
+  --transition: 0.22s ease;/* Duração padrão de transições */
+
+  /* Cores pastel dos livros lidos */
+  --book-pastel-1: #F2BDDA; /* rosa */
+  --book-pastel-2: #DCBBF2; /* azul */
+  --book-pastel-3: #ACDEF2; /* verde */
+  --book-pastel-4: #C4F2A2; /* amarelo */
+  --book-pastel-5: #F2D49B; /* lilás */
+  --book-pastel-6: #f8bfbf; /* salmão */
+  --book-pastel-7: #acf2fd; /* ciano */
+}
+
+/* ============================================================
+   RESET E BASE
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box; /* Modelo de caixa consistente */
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth; /* Rolagem suave entre seções */
+  scrollbar-width: none;   /* Esconde barra de rolagem (Firefox) */
+}
+
+/* Esconde barra de rolagem no WebKit */
+::-webkit-scrollbar { display: none; }
+
+body {
+  font-family: "Plus Jakarta Sans", sans-serif; /* Fonte principal */
+  background: var(--neutral);                   /* Fundo creme */
+  color: var(--text-dark);                      /* Cor de texto padrão */
+  min-height: 100vh;
+  overscroll-behavior: none; /* Impede bounce indesejado em mobile */
+}
+
+/* ============================================================
+   HEADER — navegação fixa no topo
+   ============================================================ */
+header {
+  width: 100%; /* Ocupa toda a largura */
+    height: auto;
+    padding: 5px 0; /* Espaçamento vertical */
+    text-align: center; /* Centraliza o texto */
+    display: flex; /* Usa flexbox */
+    align-items: center; /* Alinha itens verticalmente */
+    justify-content: center; /* Centraliza itens horizontalmente */
+    gap: 20px;
+    position: fixed; /* Fixa o elemento na viewport */
+    top: 0;          /* Alinha no topo */
+    left: 0;         /* Alinha à esquerda */
+    z-index: 1000;   /* Garante que o header fique sobre o conteúdo */
+    background: rgba(255, 255, 255, 0.034); /* Cor de fundo com transparência */
+  backdrop-filter: blur(3px); /* Efeito de desfoque */
+  gap: 20px;
+  padding: 6px 20px;
+  border-bottom: 1px solid rgba(213,170,255,0.25); /* Linha sutil */
+  flex-wrap: wrap; /* Quebra em telas pequenas */
+}
+
+/* Logo circular no header */
+.logo-header {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0; /* Não encolhe em telas pequenas */
+}
+
+/* Container dos links de navegação */
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;       /* Quebra linha no mobile */
+  justify-content: center;
+}
+
+/* Link de navegação */
+.icons a {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--primary);
+  padding: 5px 8px;
+  border-radius: 20px;
+  transition: background var(--transition), color var(--transition);
+}
+
+/* Hover dos links de nav */
+.icons a:hover {
+  background: var(--tertiary);
+  color: var(--text-dark);
+}
+
+/* Ícone SVG dentro dos links */
+.icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   BOTÃO PRINCIPAL — "Adicionar Livro" e variantes
+   ============================================================ */
+.add-book {
+  background: var(--accent);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 9px 18px;
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  box-shadow: var(--tertiary) 3px 3px 0;
+  transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
+  white-space: nowrap; /* Impede quebra de texto */
+}
+
+.add-book:hover  { filter: brightness(1.18); }
+.add-book:active { transform: translateY(3px); box-shadow: none; }
+
+/* Variante para uso dentro da biblioteca */
+.lib {
+  background: #a58be7;
+  box-shadow: 0 4px 8px var(--tertiary);
+}
+.lib:hover {
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  color: #fff;
+}
+
+/* ============================================================
+   SEÇÃO GENÉRICA — padrão compartilhado por todas as seções
+   ============================================================ */
+section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;    /* Cada seção ocupa ao menos a tela toda */
+  overflow: hidden;
+  scroll-margin-top: 70px; /* Compensa o header fixo */
+}
+
+/* Pseudo-elemento de fundo com imagem em todas as seções */
+section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.2;  /* Imagem suave como textura */
+  z-index: 0;
+  pointer-events: none; /* Não interfere nos cliques */
+}
+
+/* Conteúdo fica acima da imagem de fundo */
+section .content {
+  position: relative;
+  z-index: 2;
+  padding: 110px 24px 60px; /* Compensa header fixo + margens */
+  max-width: 1200px;
+  margin: 0 auto; /* Centraliza em telas largas */
+  width: 100%;
+}
+
+/* ============================================================
+   TIPOGRAFIA GERAL
+   ============================================================ */
+h1 {
+  font-family: "Lobster Two", cursive;
+  color: var(--accent);
+  font-size: clamp(2.5rem, 6vw, 4.5rem); /* Responsivo */
+  text-shadow: 3px 2px 0 #ffffcc;
+  line-height: 1.1;
+}
+
+h2 {
+  font-family: 'Lobster Two', cursive;
+  color: var(--dark-accent);
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  margin-bottom: 6px;
+}
+
+h3 {
+  color: var(--primary);
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.text {
+  color: var(--text-mid);
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+}
+
+/* ============================================================
+   SEÇÃO 1 — BIBLIOTECA
+   ============================================================ */
+.library::before {
+  background-image: url('https://images.unsplash.com/photo-1600818797017-d6e5027210bb?q=80&w=870&auto=format&fit=crop');
+}
+
+/* Container centralizado da biblioteca */
+.conteudo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Área de input de adição rápida */
+.container { width: 100%; max-width: 700px; }
+
+.input-area {
+  display: flex;
+  gap: 10px;
+  margin: 16px 0;
+  flex-wrap: wrap; /* Quebra em mobile */
+}
+
+/* Input de texto padrão da seção biblioteca */
+.input-area input {
+  flex: 1;
+  min-width: 160px;
+  padding: 10px 18px;
+  background: rgba(140,158,226,0.85);
+  border: none;
+  border-radius: var(--radius-pill);
+  color: #fff;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.92rem;
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.input-area input::placeholder {
+  color: rgba(255,255,255,0.8);
+  font-style: italic;
+}
+
+/* ============================================================
+   PRATELEIRAS DE LIVROS
+   ============================================================ */
+#shelves {
+  width: 100%;
+  height: 30vh;
+  max-width: 900px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* Uma prateleira horizontal */
+.shelf {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  padding: 12px 16px 8px;
+  background: rgba(213,170,255,0.14);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.4);
+  box-shadow: 0 6px 24px var(--shadow);
+  border-radius: var(--radius);
+  min-height: 120px;
+  flex-wrap: nowrap;
+  overflow-x: auto; /* Scroll horizontal se tiver muitos livros */
+  position: relative; /* Para o rótulo da prateleira */
+}
+
+/* Rótulo discreto de cada prateleira */
+.shelf-label {
+  position: absolute;
+  bottom: 4px;
+  right: 10px;
+  font-size: 0.65rem;
+  color: var(--text-mid);
+  opacity: 0.6;
+}
+
+/* Livro individual — representa a lombada */
+.book {
+  width: 22px;
+  min-width: 22px;    /* Não encolhe */
+  height: 90px;       /* Sobrescrito pelo JS */
+  border-radius: 3px 4px 4px 3px; /* Lombada mais quadrada */
+  position: relative;
+  cursor: pointer;
+  box-shadow:
+    inset -2px 0 4px rgba(0,0,0,0.15),
+    2px 2px 4px rgba(0,0,0,0.10);
+  transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
+
+  /* Estado padrão: livro cinza (não lido) */
+  background: linear-gradient(to right, #b8bcc8 75%, #9ea3b0) !important;
+  filter: saturate(0.2); /* Dessaturado = não lido */
+}
+
+/* Brilho da lombada */
+.book::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 2px;
+  width: 3px;
+  height: 100%;
+  background: rgba(255,255,255,0.28);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+/* Livro lido → ganha cor pastel vibrante */
+.book.read {
+  filter: saturate(1) brightness(1.05) !important; /* Remove dessaturação */
+}
+
+/* Hover: levita o livro */
+.book:hover {
+  transform: translateY(-8px) scale(1.06);
+  z-index: 10;
+  box-shadow: inset -2px 0 4px rgba(0,0,0,0.2), 4px 8px 14px rgba(0,0,0,0.22);
+}
+
+/* Tooltip com título do livro */
+.book:hover::after {
+  content: attr(data-title);
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text-dark);
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 11px;
+  border-radius: 8px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* Botão de adicionar nova prateleira */
+.btn-add-shelf {
+  margin-top: 16px;
+  background: transparent;
+  border: 2px dashed var(--tertiary);
+  color: var(--primary);
+  border-radius: var(--radius-pill);
+  padding: 8px 22px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.85rem;
+  transition: background var(--transition), color var(--transition);
+}
+.btn-add-shelf:hover {
+  background: var(--tertiary);
+  color: var(--text-dark);
+}
+
+/* ============================================================
+   MODAL — sobreposição e caixa de diálogo
+   ============================================================ */
+/* Overlay escurecido que cobre a tela toda */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(58,47,94,0.55);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px; /* Margem em mobile */
+}
+
+/* Estado oculto do modal */
+.modal-overlay.hidden { display: none; }
+
+/* Caixa branca do modal */
+.modal-box {
+  background: rgba(255,255,255,0.96);
+  border-radius: 20px;
+  padding: 28px 24px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;     /* Não passa da tela */
+  overflow-y: auto;     /* Scroll interno se necessário */
+  box-shadow: 0 20px 60px rgba(100,60,180,0.22);
+  border: 1px solid rgba(213,170,255,0.4);
+}
+
+/* Linha do topo do modal */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.modal-header h3 {
+  font-size: 1.2rem;
+  color: var(--accent);
+}
+
+/* Botão X para fechar o modal */
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: var(--text-mid);
+  cursor: pointer;
+  line-height: 1;
+  transition: color var(--transition);
+}
+.close-btn:hover { color: var(--accent); }
+
+/* ============================================================
+   FORMULÁRIO (modal e acervo)
+   ============================================================ */
+form, .acervo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Linha horizontal de campos */
+.form-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap; /* Quebra em mobile */
+}
+
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+
+/* Inputs dentro do modal */
+.modal-box input,
+.modal-box select,
+.modal-box textarea,
+.acervo-form input,
+.acervo-form select,
+.acervo-form textarea {
+  flex: 1;
+  min-width: 120px; /* Mínimo para não encolher demais */
+  padding: 10px 14px;
+  background: rgba(245,242,237,0.9);
+  border: 1.5px solid rgba(213,170,255,0.5);
+  border-radius: 10px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.88rem;
+  color: var(--text-dark);
+  transition: border-color var(--transition);
+}
+
+.modal-box input:focus,
+.modal-box select:focus,
+.modal-box textarea:focus,
+.acervo-form input:focus,
+.acervo-form select:focus {
+  outline: none;
+  border-color: var(--accent); /* Destaque ao focar */
+}
+
+.modal-box input::placeholder,
+.acervo-form input::placeholder { color: var(--text-mid); }
+
+/* Label das datas */
+.date-label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.75rem;
+  color: var(--text-mid);
+  font-weight: 600;
+  gap: 4px;
+  flex: 1;
+  min-width: 100px;
+}
+
+.date-label input { min-width: unset; }
+
+/* Textarea das notas */
+.modal-box textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Linha inferior do formulário: checkboxes + botão salvar */
+.form-footer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* Label de checkbox estilizado */
+.check-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--primary);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Checkbox estilizado */
+.check-label input[type="checkbox"] {
+  accent-color: var(--accent);
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  flex: unset;
+}
+
+/* Botão salvar do formulário */
+.btn-save {
+  margin-left: auto;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 10px 24px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  box-shadow: var(--tertiary) 3px 3px 0;
+  transition: filter var(--transition), transform var(--transition);
+}
+.btn-save:hover  { filter: brightness(1.15); }
+.btn-save:active { transform: translateY(3px); box-shadow: none; }
+
+/* ============================================================
+   SEÇÃO 2 — LEITURAS (Reader)
+   ============================================================ */
+.reader::before {
+  background-image: url('https://images.unsplash.com/photo-1514593214839-ce1849100055?q=80&w=774&auto=format&fit=crop');
+}
+
+/* Grid de cards responsivo */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 22px;
+  margin-top: 24px;
+}
+
+/* Card individual (perspectiva 3D) */
+.card {
+  perspective: 900px; /* Define perspectiva para o flip */
+  height: 320px;
+  min-height: 320px;
+}
+
+/* Invólucro interno que gira */
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d; /* Mantém 3D nos filhos */
+  transition: transform 0.55s cubic-bezier(.4,0,.2,1); /* Animação de flip */
+  border-radius: var(--radius);
+  box-shadow: 0 12px 34px rgba(80, 50, 140, 0.16);
+}
+
+/* Desktop: flip no hover */
+@media (hover: hover) {
+  .card:hover .card-inner { transform: rotateY(180deg); }
+}
+
+/* Mobile: flip via classe JS */
+.card-inner.flip { transform: rotateY(180deg); }
+
+/* Face do card (frente e verso têm mesma base) */
+.card-front,
+.card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;   /* Esconde o lado oposto */
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+/* Frente: imagem da capa */
+.card-front {
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-front img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: transform 0.45s ease;
+}
+
+.card:hover .card-front img,
+.card:focus-within .card-front img {
+  transform: scale(1.04);
+}
+
+.card-front h3 {
+  padding: 8px 10px 2px;
+  font-size: 0.82rem;
+  color: var(--text-dark);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-front .rating {
+  padding: 0 10px 8px;
+  font-size: 0.78rem;
+  color: var(--text-mid);
+  font-weight: 700;
+}
+
+/* Verso: detalhes do livro */
+.card-back {
+  background: linear-gradient(145deg, #f0ebff, #fdf0f8);
+  transform: rotateY(180deg); /* Já começa invertido */
+  padding: 14px 12px;
+  font-size: 0.78rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card-back p { color: var(--text-dark); line-height: 1.5; }
+.card-back strong { color: var(--primary); }
+
+/* Botão "Ver mais" exclusivo para mobile */
+.btn-flip-mobile {
+  display: none; /* Oculto por padrão */
+  margin-top: 8px;
+  background: var(--tertiary);
+  color: var(--text-dark);
+  border: none;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+/* Mostra o botão apenas em mobile */
+@media (hover: none) {
+  .btn-flip-mobile { display: block; }
+}
+
+/* Estado vazio (sem livros) */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-mid);
+}
+.empty-state span { font-size: 3rem; display: block; margin-bottom: 12px; }
+.hidden { display: none !important; }
+
+/* ============================================================
+   SEÇÃO 3 — ESTATÍSTICAS
+   ============================================================ */
+.stats-section::before {
+  background-image: url('https://images.unsplash.com/photo-1527176930608-09cb256ab504?q=80&w=874&auto=format&fit=crop');
+}
+
+.stats-section { background-color: rgba(144,253,193,0.06); }
+
+/* Cabeçalho da seção de stats */
+.stats-header { margin-bottom: 28px; }
+
+/* Grade dos cards de estatísticas */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr; /* Coluna principal + 2 menores */
+  grid-template-rows: auto auto auto;
+  gap: 16px;
+}
+
+/* Base dos cards */
+.stat-card,
+.stat-main {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 8px 30px var(--shadow);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+
+/* Card principal: ocupa 2 linhas */
+.stat-main {
+  grid-row: span 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.stat-main h3 { font-size: 0.9rem; opacity: 0.75; }
+.stat-main p  { font-size: 2.8rem; font-weight: 800; color: var(--accent); }
+.stat-main small { font-size: 0.78rem; color: var(--text-mid); }
+
+/* Cards secundários */
+.stat-card h3 { font-size: 0.82rem; opacity: 0.75; }
+.stat-card p  { font-size: 1.8rem; font-weight: 800; color: var(--primary); }
+
+/* Card largo (gênero mais lido) ocupa 2 colunas */
+.stat-wide {
+  grid-column: span 2;
+}
+
+/* Barra de progresso anual */
+.progress {
+  margin-top: 10px;
+  height: 8px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: 10px;
+  transition: width 0.8s ease;
+}
+
+/* Pílulas de gênero dentro do card de gênero */
+.genre-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.genre-pill {
+  background: rgba(213,170,255,0.3);
+  border: 1px solid var(--tertiary);
+  color: var(--primary);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* Subtítulo dentro de stats */
+.stats-sub {
+  margin: 28px 0 12px;
+  color: var(--primary);
+  font-size: 1rem;
+}
+
+/* Gráfico de barras mensais */
+.monthly-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 100px;
+  background: var(--glass);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  border: 1px solid rgba(255,255,255,0.4);
+  overflow-x: auto; /* Scroll se muitos meses */
+}
+
+/* Coluna individual do mini gráfico */
+.bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  min-width: 28px;
+}
+
+/* Barra colorida da coluna */
+.bar-col .bar {
+  width: 100%;
+  max-width: 28px;
+  background: linear-gradient(180deg, var(--tertiary), var(--primary));
+  border-radius: 4px 4px 0 0;
+  min-height: 4px; /* Mostra algo mesmo com 0 livros */
+  transition: height 0.6s ease;
+}
+
+/* Rótulo do mês abaixo da barra */
+.bar-col .bar-label {
+  font-size: 0.6rem;
+  color: var(--text-mid);
+  font-weight: 700;
+}
+
+/* ============================================================
+   SEÇÃO 4 — RESUMOS
+   ============================================================ */
+.resume-section::before {
+  background-image: url('https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=873&auto=format&fit=crop');
+}
+
+/* Área de adição de resumo */
+.resume-add {
+  background: var(--glass);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius);
+  padding: 20px;
+  border: 1px solid rgba(213,170,255,0.3);
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Select e textarea do resumo */
+.resume-add select,
+.resume-add textarea {
+  padding: 10px 14px;
+  border: 1.5px solid rgba(213,170,255,0.5);
+  border-radius: 10px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.88rem;
+  background: rgba(255,255,255,0.85);
+  color: var(--text-dark);
+  resize: vertical;
+  min-height: 90px;
+}
+
+.resume-add select:focus,
+.resume-add textarea:focus { outline: none; border-color: var(--accent); }
+
+/* Linha com tipo + botão salvar */
+.resume-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.resume-actions select { flex: 1; min-width: 140px; min-height: unset; }
+
+/* Botão de salvar resumo */
+.btn-resume {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 10px 22px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: filter var(--transition);
+}
+.btn-resume:hover { filter: brightness(1.15); }
+
+/* Lista de notas salvas */
+.resume-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+/* Cartão de nota individual */
+.resume-card {
+  background: var(--glass);
+  border: 1px solid rgba(213,170,255,0.3);
+  backdrop-filter: blur(6px);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  position: relative;
+}
+
+/* Tipo da nota (badge colorido) */
+.resume-type-badge {
+  display: inline-block;
+  background: rgba(213,170,255,0.35);
+  color: var(--primary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+}
+
+.resume-card .resume-book-title {
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+}
+
+.resume-card p {
+  font-size: 0.88rem;
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+/* Botão de deletar nota */
+.resume-delete {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--text-mid);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: color var(--transition);
+}
+.resume-delete:hover { color: #e05; }
+
+/* ============================================================
+   SEÇÃO 5 — PERFIL
+   ============================================================ */
+.profile-section::before {
+  background-image: url('https://images.unsplash.com/photo-1452882628481-6a2da9481239?q=80&w=869&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+}
+
+/* Bloco hero do perfil: avatar + info */
+.profile-hero {
+  display: flex;
+  align-items: flex-start;
+  gap: 28px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+/* Wrapper do avatar com botão de edição */
+.avatar-wrapper {
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* Imagem do avatar circular */
+.avatar-wrapper img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--tertiary);
+  box-shadow: 0 6px 20px var(--shadow);
+  display: block;
+}
+
+/* Overlay da câmera ao passar o mouse */
+.avatar-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(58,47,94,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+.avatar-wrapper:hover .avatar-overlay { opacity: 1; }
+
+/* Área de texto do perfil */
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Campo editável (contenteditable) */
+.editable-field {
+  outline: none;
+  border-bottom: 2px dashed transparent;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: border-color var(--transition), background var(--transition);
+  cursor: text;
+  color: var(--text-dark);
+}
+
+.editable-field:focus {
+  border-bottom-color: var(--tertiary);
+  background: rgba(213,170,255,0.12);
+}
+
+/* Nome grande do perfil */
+.editable-field[id="profileName"] {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-family: "Lobster Two", cursive;
+  color: var(--accent);
+}
+
+.bio-field  { font-size: 0.95rem; color: var(--text-mid); }
+.city-field { font-size: 0.88rem; color: var(--text-mid); }
+
+/* Seção de conquistas */
+.profile-badges { margin-bottom: 28px; }
+.profile-badges h3 { margin-bottom: 14px; }
+
+/* Grid de badges */
+.badges-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Badge individual */
+.badge {
+  background: linear-gradient(135deg, var(--tertiary), var(--secondary));
+  color: var(--text-dark);
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+/* Seção de gêneros do perfil */
+.profile-genres { margin-bottom: 28px; }
+.profile-genres h3 { margin-bottom: 12px; }
+
+/* Tags de gênero (pílulas) */
+.genre-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.genre-tag {
+  background: rgba(213,170,255,0.25);
+  border: 1px solid var(--tertiary);
+  color: var(--primary);
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+/* Seção de redes sociais */
+.profile-social { margin-bottom: 28px; }
+.profile-social h3 { margin-bottom: 14px; }
+
+/* Grade de botões sociais */
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Botão social genérico */
+.social-btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: filter var(--transition), transform var(--transition);
+}
+.social-btn:hover  { filter: brightness(1.12); transform: translateY(-2px); }
+.social-btn:active { transform: translateY(0); }
+
+/* Cores individuais por rede */
+.sesc-skoob      { background: #ff6320; color: #fff; }
+.sesc-goodreads  { background: #553b08; color: #f4f1ea; }
+.sesc-storygraph { background: #1d1b1e; color: #fff; }
+.sesc-instagram  { background: linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); color: #fff; }
+.sesc-twitter    { background: #000; color: #fff; }
+.sesc-tiktok     { background: #010101; color: #fff; border: 1px solid #25f4ee; }
+.sesc-blog       { background: var(--accent); color: #fff; }
+
+/* Botão de salvar perfil */
+.btn-save-profile {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 12px 30px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: var(--tertiary) 3px 3px 0;
+  transition: filter var(--transition), transform var(--transition);
+}
+.btn-save-profile:hover  { filter: brightness(1.12); }
+.btn-save-profile:active { transform: translateY(3px); box-shadow: none; }
+
+/* ============================================================
+   SEÇÃO 6 — ACERVO
+   ============================================================ */
+.acervo-section::before {
+  background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=870&auto=format&fit=crop');
+}
+
+/* Cabeçalho do acervo */
+.acervo-header { margin-bottom: 24px; }
+
+/* Badge de classificação da biblioteca */
+.acervo-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* Badge individual de classificação */
+.acervo-badge {
+  background: linear-gradient(135deg, var(--tertiary), var(--secondary));
+  color: var(--text-dark);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* Formulário de adição ao acervo */
+.acervo-form {
+  background: var(--glass);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius);
+  padding: 20px;
+  border: 1px solid rgba(213,170,255,0.3);
+  margin-bottom: 24px;
+}
+
+/* Painel de métricas do acervo */
+.acervo-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+/* Card de métrica individual */
+.acervo-stat-card {
+  background: var(--glass);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  text-align: center;
+}
+
+.acervo-stat-card .ac-val {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.acervo-stat-card .ac-label {
+  font-size: 0.72rem;
+  color: var(--text-mid);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* Filtros do acervo */
+.acervo-filters {
+  background: var(--glass);
+  backdrop-filter: blur(6px);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(213,170,255,0.25);
+}
+
+.acervo-filters h3 { margin-bottom: 12px; }
+
+/* Linha de filtros: selects + input */
+.filters-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Selects e inputs dos filtros */
+.filters-row select,
+.filters-row input {
+  padding: 8px 12px;
+  border: 1.5px solid rgba(213,170,255,0.4);
+  border-radius: 10px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.84rem;
+  background: rgba(255,255,255,0.85);
+  color: var(--text-dark);
+  flex: 1;
+  min-width: 120px;
+}
+
+.filters-row select:focus,
+.filters-row input:focus { outline: none; border-color: var(--accent); }
+
+/* Checkbox de favoritos nos filtros */
+.filter-fav { flex-shrink: 0; white-space: nowrap; }
+
+/* Lista do acervo: grid de cards */
+.acervo-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+/* Card de livro no acervo */
+.acervo-card {
+  background: var(--glass);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(213,170,255,0.3);
+  border-radius: var(--radius);
+  padding: 16px;
+  position: relative;
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.acervo-card:hover {
+  box-shadow: 0 10px 28px var(--shadow);
+  transform: translateY(-3px);
+}
+
+/* Título do livro no card do acervo */
+.acervo-card .ac-title {
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 0.92rem;
+  margin-bottom: 4px;
+  padding-right: 30px; /* Espaço para o ⭐ */
+}
+
+.acervo-card .ac-author {
+  font-size: 0.8rem;
+  color: var(--text-mid);
+  margin-bottom: 10px;
+}
+
+/* Linha de chips (tipo, gênero, status) */
+.ac-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 8px;
+}
+
+/* Chip colorido */
+.ac-chip {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 12px;
+  color: var(--text-dark);
+}
+
+/* Cores dos chips por tipo */
+.chip-fisico   { background: #c5f7d5; }
+.chip-digital  { background: #c5d5f7; }
+.chip-lido     { background: #d5f7c5; }
+.chip-nao_lido { background: #f7e0c5; }
+.chip-lendo    { background: #c5f0f7; }
+.chip-pausado  { background: #f7c5d5; }
+.chip-genre    { background: rgba(213,170,255,0.35); }
+
+/* Linha de rodapé do card do acervo */
+.ac-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.ac-pages {
+  font-size: 0.75rem;
+  color: var(--text-mid);
+  font-weight: 600;
+}
+
+/* Botão de favorito no card */
+.btn-fav-toggle {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  line-height: 1;
+}
+.btn-fav-toggle:hover { transform: scale(1.25); }
+
+/* Botão de excluir do acervo */
+.btn-ac-delete {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: var(--text-mid);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: color var(--transition);
+}
+.btn-ac-delete:hover { color: #e03; }
+
+/* ============================================================
+   RESPONSIVIDADE — breakpoints
+   ============================================================ */
+
+/* Tablet (≤ 768px) */
+@media (max-width: 768px) {
+  /* Header mais compacto */
+  header { gap: 10px; padding: 6px 12px; }
+
+  .icons a { font-size: 0.72rem; padding: 4px 6px; }
+  .icons .icon { display: none; } /* Esconde ícones para economizar espaço */
+
+  .add-book { font-size: 0.75rem; padding: 7px 13px; }
+
+  /* Stats: empilha as colunas */
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .stat-main { grid-row: auto; grid-column: 1 / -1; } /* Ocupa linha toda */
+  .stat-wide { grid-column: 1 / -1; }
+
+  /* Cards menores em mobile */
+  .card { height: 240px; }
+  .card-front img { height: 170px; }
+
+  /* Perfil: avatar e info empilhados */
+  .profile-hero { flex-direction: column; align-items: center; text-align: center; }
+}
+
+/* Mobile (≤ 480px) */
+@media (max-width: 480px) {
+  /* Header colapsa em duas linhas */
+  header { flex-direction: column; gap: 6px; padding: 8px 10px; }
+
+  /* Conteúdo com padding menor */
+  section .content { padding: 80px 14px 40px; }
+
+  /* Stats: coluna única */
+  .stats-grid { grid-template-columns: 1fr; }
+  .stat-wide  { grid-column: auto; }
+
+  /* Cards em 2 colunas */
+  .cards-container { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .card { height: 280px; min-height: 280px; }
+  .card-front img { height: 180px; }
+
+  /* Prateleiras em coluna no mobile */
+  #shelves {
+    flex-direction: column;
+    height: auto;
+  }
+
+  /* Acervo em coluna única */
+  .acervo-list { grid-template-columns: 1fr; }
+
+  /* Formulário: campos empilhados */
+  .form-row { flex-direction: column; }
+  .date-label { flex-direction: row; align-items: center; }
+}
+
+/* Telas muito grandes (≥ 1400px) */
+@media (min-width: 1400px) {
+  section .content { max-width: 1300px; }
+  .cards-container { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+  .acervo-list     { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+}
+
+/* ============================================================
+   NOME EDITÁVEL DA BIBLIOTECA
+   ============================================================ */
+.library-name-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.library-name-display { margin-bottom: 0; }
+.btn-edit-lib-name {
+  font-size: 1px;
+  color: var(--accent);
+  background: var(--tertiary);
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 8px;
+  transition: opacity var(--transition), background var(--transition);
+  line-height: 1;
+}
+.btn-edit-lib-name:hover { opacity: 1; background: rgba(96, 24, 167, 0.63); color: #fff;}
+.library-name-input {
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(213,170,255,0.15);
+  border: 2px solid var(--tertiary);
+  border-radius: 10px;
+  padding: 4px 14px;
+  text-align: center;
+  outline: none;
+  width: clamp(200px, 50vw, 480px);
+  font-family: "Lobster Two", cursive;
+  transition: border-color var(--transition);
+}
+.library-name-input:focus { border-color: var(--accent); }
+
+/* ============================================================
+   ACERVO — FORMULÁRIO COM PREVIEW DE CAPA
+   ============================================================ */
+.acervo-form-inner {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+.ac-form-cover-wrap {
+  flex-shrink: 0;
+  width: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.ac-form-cover-img {
+  width: 110px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid rgba(213,170,255,0.5);
+  box-shadow: 0 4px 14px var(--shadow);
+  display: none;
+}
+.ac-form-cover-placeholder {
+  width: 110px;
+  height: 160px;
+  background: linear-gradient(145deg, rgba(213,170,255,0.25), rgba(252,186,211,0.2));
+  border: 2px dashed rgba(213,170,255,0.5);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--text-mid);
+}
+.ac-form-cover-placeholder span { font-size: 2rem; }
+.ac-form-cover-placeholder small { font-size: 0.68rem; font-weight: 600; text-align: center; }
+.ac-form-fields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+@media (max-width: 560px) {
+  .acervo-form-inner { flex-direction: column; align-items: center; }
+  .ac-form-cover-wrap { width: 100%; flex-direction: row; justify-content: center; }
+  .ac-form-cover-img, .ac-form-cover-placeholder { width: 90px; height: 130px; }
+}
+
+/* ============================================================
+   MODAL DE PERFIL
+   ============================================================ */
+.modal-box--wide { max-width: 680px; }
+
+.pf-avatar-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.pf-avatar-wrap {
+  position: relative;
+  cursor: pointer;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--tertiary);
+  box-shadow: 0 4px 16px var(--shadow);
+}
+.pf-avatar-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pf-avatar-wrap .avatar-overlay { font-size: 0.75rem; border-radius: 0; }
+.pf-hint { font-size: 0.72rem; color: var(--text-mid); }
+
+.pf-section-title {
+  font-weight: 800;
+  font-size: 0.82rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 8px 0 2px;
+  padding-bottom: 4px;
+  border-bottom: 1.5px solid rgba(213,170,255,0.35);
+}
+.pf-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-mid);
+}
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.btn-edit-profile-modal {
+  background: rgba(136,103,214,0.15) !important;
+  color: var(--accent) !important;
+  box-shadow: var(--tertiary) 3px 3px 0 !important;
+}
