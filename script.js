@@ -842,7 +842,6 @@ function addToAcervo() {
   // Monta o objeto do livro do acervo
   const item = {
     id:        Date.now(),
-    cover:     (document.getElementById("acCover")?.value || "").trim(),
     title,
     author:    document.getElementById("acAuthor").value.trim(),
     publisher: document.getElementById("acPublisher").value.trim(),
@@ -862,15 +861,13 @@ function addToAcervo() {
   renderAcervoClassificacao(); // Atualiza badge de classificação
 
   // Limpa o formulário de acervo
-  ["acCover","acTitle","acAuthor","acPublisher","acYear","acPages"].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = "";
+  ["acTitle","acAuthor","acPublisher","acYear","acPages"].forEach(id => {
+    document.getElementById(id).value = "";
   });
   document.getElementById("acType").value     = "fisico";
   document.getElementById("acGenre").value    = "";
   document.getElementById("acStatus").value   = "nao_lido";
   document.getElementById("acFavorite").checked = false;
-  previewAcCover(""); // Reseta o preview de capa
 }
 
 // Alterna o favorito de um item do acervo
@@ -1009,11 +1006,11 @@ function renderAcervoClassificacao() {
 
   // Critérios de classificação pelo tamanho da coleção
   let classificacao = "";
-  if (total < 10)       classificacao = `🌱 ${acervoName}:  Nascente`;
-  else if (total < 30)  classificacao = `📚 ${acervoName} em Crescimento`;
-  else if (total < 60)  classificacao = `🏛️ ${acervoName} Estabelecida`;
-  else if (total < 100) classificacao = `🌟 Grande ${acervoName}`;
-  else                  classificacao = `👑 ${acervoName} Magistral`;
+  if (total < 10)       classificacao = "🌱 Biblioteca Nascente";
+  else if (total < 30)  classificacao = "📚 Biblioteca em Crescimento";
+  else if (total < 60)  classificacao = "🏛️ Biblioteca Estabelecida";
+  else if (total < 100) classificacao = "🌟 Grande Biblioteca";
+  else                  classificacao = "👑 Biblioteca Magistral";
 
   const hasDigital = acervo.some(a => a.type === "digital");
   const hasFisico  = acervo.some(a => a.type === "fisico");
@@ -1045,179 +1042,33 @@ function formatDate(dateStr) {
 
 
 // ============================================================
-// 🏷️ NOME EDITÁVEL DO ACERVO
+// 🍔 HAMBÚRGUER — menu mobile recolhível
 // ============================================================
 
-// Nome salvo no localStorage (padrão: "Biblioteca")
-let acervoName = localStorage.getItem("acervoName") || "Biblioteca";
+const hamburgerBtn = document.getElementById("hamburgerBtn"); // Botão hambúrguer
+const navMenu      = document.getElementById("navMenu");      // Container dos links
 
-// Aplica o nome salvo ao h2 ao carregar a página
-function initAcervoName() {
-  const el = document.getElementById("libraryName");
-  if (el) el.textContent = acervoName;
-
-  // Atualiza também o título da seção Acervo
-  const acervoEl = document.getElementById("acervoTitle");
-  if (acervoEl) acervoEl.textContent = `🗂️ ${acervoName}`;
-}
-
-// Alterna entre exibição (h2) e edição (input)
-function toggleAcervoNameEdit() {
-  const display = document.getElementById("libraryName");
-  const input   = document.getElementById("libraryNameInput");
-  const btn     = document.querySelector(".btn-edit-lib-name");
-  const editing = !input.classList.contains("hidden");
-  if (editing) {
-    saveAcervoName();
-  } else {
-    input.value = acervoName;
-    display.classList.add("hidden");
-    input.classList.remove("hidden");
-    btn.textContent = "✅";
-    input.focus(); input.select();
-  }
-}
-
-// Salva o novo nome e volta ao modo de exibição
-function saveAcervoName() {
-  const display = document.getElementById("libraryName");
-  const input   = document.getElementById("libraryNameInput");
-  const btn     = document.querySelector(".btn-edit-lib-name");
-  acervoName   = input.value.trim() || "Biblioteca";
-  localStorage.setItem("acervoName", acervoName);
-  display.textContent = acervoName;
-  display.classList.remove("hidden");
-  input.classList.add("hidden");
-  btn.textContent = "✏️";
-
-  // Atualiza o título da seção Acervo
-  const acervoEl = document.getElementById("acervoTitle");
-  if (acervoEl) acervoEl.textContent = `🗂️ ${acervoName}`;
-}
-
-
-// ============================================================
-// 🖼️ PREVIEW DE CAPA — formulário do acervo
-// ============================================================
-
-// Mostra a imagem em tempo real conforme a URL é digitada
-function previewAcCover(url) {
-  const img   = document.getElementById("acCoverPreview");
-  const ph    = document.getElementById("acCoverPlaceholder");
-  if (!img || !ph) return;
-  if (url && url.startsWith("http")) {
-    img.src = url;
-    img.style.display = "block";
-    ph.style.display  = "none";
-  } else {
-    img.style.display = "none";
-    ph.style.display  = "flex";
-  }
-}
-
-
-// ============================================================
-// 👤 MODAL DE PERFIL — edição completa em modal dedicado
-// ============================================================
-
-// Abre o modal e pré-preenche com dados já salvos
-function openProfileModal() {
-  const m = document.getElementById("profileModal");
-  if (!m) return;
-  m.classList.remove("hidden");
-  document.body.style.overflow = "hidden";
-
-  // Preenche campos com valores atuais do perfil
-  document.getElementById("pfName").value       = profile.name  || "";
-  document.getElementById("pfBio").value        = profile.bio   || "";
-  document.getElementById("pfCity").value       = profile.city  || "";
-  document.getElementById("pfGoal").value       = profile.goal  || "";
-  document.getElementById("pfFavGenre").value   = profile.favGenre || "";
-  document.getElementById("pfSkoob").value      = profile.socials?.skoob      || "";
-  document.getElementById("pfGoodreads").value  = profile.socials?.goodreads  || "";
-  document.getElementById("pfStorygraph").value = profile.socials?.storygraph || "";
-  document.getElementById("pfInstagram").value  = profile.socials?.instagram  || "";
-  document.getElementById("pfTwitter").value    = profile.socials?.twitter    || "";
-  document.getElementById("pfTiktok").value     = profile.socials?.tiktok     || "";
-  document.getElementById("pfBlog").value       = profile.socials?.blog       || "";
-
-  // Restaura avatar no preview do modal
-  const prev = document.getElementById("avatarPreview");
-  if (prev && profile.avatar) prev.src = profile.avatar;
-}
-
-// Fecha o modal de perfil
-function closeProfileModal() {
-  const m = document.getElementById("profileModal");
-  if (m) m.classList.add("hidden");
-  document.body.style.overflow = "";
-}
-
-// Troca avatar via upload dentro do modal
-function changeAvatarModal(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const b64 = e.target.result;
-    document.getElementById("avatarPreview").src = b64;
-    document.getElementById("avatarImg").src     = b64; // atualiza a seção também
-    profile.avatar = b64;
-    localStorage.setItem("profile", JSON.stringify(profile));
-  };
-  reader.readAsDataURL(file);
-}
-
-// Salva todos os dados do modal no objeto profile
-function saveProfileModal() {
-  // Dados pessoais
-  profile.name     = document.getElementById("pfName").value.trim()  || profile.name;
-  profile.bio      = document.getElementById("pfBio").value.trim()   || profile.bio;
-  profile.city     = document.getElementById("pfCity").value.trim()  || profile.city;
-  profile.goal     = parseInt(document.getElementById("pfGoal").value) || profile.goal || 12;
-  profile.favGenre = document.getElementById("pfFavGenre").value;
-
-  // Redes sociais — atualiza apenas as preenchidas no modal
-  if (!profile.socials) profile.socials = {};
-  const socialMap = {
-    skoob:      "pfSkoob",
-    goodreads:  "pfGoodreads",
-    storygraph: "pfStorygraph",
-    instagram:  "pfInstagram",
-    twitter:    "pfTwitter",
-    tiktok:     "pfTiktok",
-    blog:       "pfBlog"
-  };
-  Object.entries(socialMap).forEach(([key, inputId]) => {
-    const val = document.getElementById(inputId).value.trim();
-    if (val) profile.socials[key] = val;
-    else delete profile.socials[key];
-  });
-
-  localStorage.setItem("profile", JSON.stringify(profile));
-
-  // Atualiza os campos contenteditable da seção de perfil
-  const nameEl = document.getElementById("profileName");
-  const bioEl  = document.getElementById("profileBio");
-  const cityEl = document.getElementById("profileCity");
-  if (nameEl) nameEl.innerText = profile.name;
-  if (bioEl)  bioEl.innerText  = profile.bio;
-  if (cityEl) cityEl.innerText = profile.city;
-
-  renderBadges();
-  renderProfileGenres();
-  closeProfileModal();
-}
-
-// Listeners do modal de perfil (adicionados após o DOM estar pronto)
-document.addEventListener("DOMContentLoaded", () => {
-  const closeBtn = document.getElementById("closeProfileModalBtn");
-  const overlay  = document.getElementById("profileModal");
-  if (closeBtn) closeBtn.addEventListener("click", closeProfileModal);
-  if (overlay)  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) closeProfileModal();
-  });
+// Alterna abertura/fechamento do menu
+hamburgerBtn.addEventListener("click", (e) => {
+  e.stopPropagation(); // Impede que o clique propague para o document
+  const isOpen = navMenu.classList.toggle("is-open"); // Adiciona/remove .is-open
+  hamburgerBtn.classList.toggle("is-open", isOpen);   // Anima os tracinhos
+  hamburgerBtn.setAttribute("aria-expanded", isOpen); // Acessibilidade
 });
+
+// Fecha o menu ao clicar em qualquer lugar fora dele
+document.addEventListener("click", (e) => {
+  if (!navMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+    closeMenu();
+  }
+});
+
+// Fecha o menu (chamado pelos links e pelo clique fora)
+function closeMenu() {
+  navMenu.classList.remove("is-open");
+  hamburgerBtn.classList.remove("is-open");
+  hamburgerBtn.setAttribute("aria-expanded", "false");
+}
 
 
 // ============================================================
@@ -1225,13 +1076,12 @@ document.addEventListener("DOMContentLoaded", () => {
 // ============================================================
 
 // Renderiza todas as seções com os dados do localStorage
-render();             // Prateleiras da biblioteca
-initAcervoName();     // Nome personalizado do acervo
-renderCards();        // Cards de leituras
-renderStats();        // Estatísticas
-renderResumes();      // Notas e citações
-loadProfile();        // Dados do perfil
-renderAcervo();       // Lista do acervo
-renderAcervoStats();  // Métricas do acervo
-renderAcervoClassificacao(); // Classificação do acervo
+render();           // Prateleiras da biblioteca
+renderCards();      // Cards de leituras
+renderStats();      // Estatísticas
+renderResumes();    // Notas e citações
+loadProfile();      // Dados do perfil
+renderAcervo();     // Lista do acervo
+renderAcervoStats(); // Métricas do acervo
+renderAcervoClassificacao(); // Classificação da biblioteca
 updateResumeSelect(); // Popula o select de livros nos resumos
