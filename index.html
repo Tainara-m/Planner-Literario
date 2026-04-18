@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <!-- Garante responsividade em dispositivos móveis -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Planner Literário - Organize suas ideias e projetos literários">
+  <meta name="keywords" content="planner literário, organização literária, projetos literários, ideias literárias">
+  <meta name="author" content="Tainara Martins">
+  <meta property="og:title" content="Planner Literário">
+  <meta property="og:description" content="Planner Literário - Organize suas ideias e projetos literários">
+
+  <!-- Folha de estilos principal -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Fontes do Google: Lobster Two (título), Playwrite IE (decorativa), Plus Jakarta Sans (corpo) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playwrite+IE:wght@100..400&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+
+  <!-- Ícones de favoritos para múltiplos dispositivos -->
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <title>Planner Literário</title>
+</head>
+<body>
+
+  <!-- ========================================================
+       HEADER FIXO — navegação principal do site
+       ======================================================== -->
+  <header>
+    <!-- Logo do site -->
+    <img class="logo-header" src="assets/Logo PNG.png" alt="Logo do site">
+
+    <!-- Botão hambúrguer — visível apenas no mobile -->
+    <button class="hamburger" id="hamburgerBtn" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <!-- Links de navegação com ícones SVG -->
+    <!-- No mobile fica oculto até o hambúrguer ser clicado -->
+    <div class="icons" id="navMenu">
+      <a href="#library" onclick="closeMenu()">
+        <img class="icon" src="assets/auto_stories_24dp_38148B_FILL0_wght400_GRAD0_opsz24.svg" alt="Biblioteca">Biblioteca
+      </a>
+      <a href="#reader" onclick="closeMenu()">
+        <img src="assets/add_24dp_38148B_FILL0_wght400_GRAD0_opsz24.svg" alt="Leituras" class="icon">Leituras
+      </a>
+      <a href="#stats" onclick="closeMenu()">
+        <img src="assets/bar_chart_24dp_38148B_FILL0_wght400_GRAD0_opsz24.svg" alt="Estatísticas" class="icon">Estatísticas
+      </a>
+      <a href="#resume" onclick="closeMenu()">
+        <img src="assets/contextual_token_24dp_38148B_FILL0_wght400_GRAD0_opsz24.svg" alt="Resumo" class="icon">Resumo
+      </a>
+      <a href="#profile" onclick="closeMenu()">
+        <img src="assets/emoji_people_24dp_38148B_FILL0_wght400_GRAD0_opsz24.svg" alt="Perfil" class="icon">Perfil
+      </a>
+      <a href="#acervo" onclick="closeMenu()">
+        <img src="assets/newsstand_24dp_38148B_FILL0_wght400_GRAD0_opsz24.svg" alt="Acervo" class="icon">Acervo
+      </a>
+    </div>
+
+    <!-- Botão que abre o modal de cadastro de livro -->
+    <button id="openModalBtn" class="add-book">Adicionar Livro</button>
+  </header>
+
+  <!-- ========================================================
+       MODAL DE CADASTRO DE LIVRO — aparece ao clicar no header
+       ======================================================== -->
+  <div id="modal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <!-- Cabeçalho do modal com título e botão de fechar -->
+      <div class="modal-header">
+        <h3>✦ Novo Livro</h3>
+        <button id="closeModalBtn" class="close-btn">&times;</button>
+      </div>
+
+      <!-- Formulário de cadastro completo -->
+      <form id="bookForm">
+        <!-- Linha 1: URL da capa -->
+        <div class="form-group">
+          <input type="text" id="cover" placeholder="URL da capa (opcional)">
+        </div>
+
+        <!-- Linha 2: Dados principais -->
+        <div class="form-row">
+          <input type="text" id="title" placeholder="Título do livro *" required>
+          <input type="text" id="author" placeholder="Autor(a)">
+        </div>
+
+        <!-- Linha 3: Dados editoriais -->
+        <div class="form-row">
+          <input type="text" id="publisher" placeholder="Editora">
+          <input type="number" id="year" placeholder="Ano">
+        </div>
+
+        <!-- Linha 4: Gênero e páginas -->
+        <div class="form-row">
+          <!-- Select de gênero literário -->
+          <select id="genre">
+            <option value="">Gênero literário...</option>
+            <option value="Romance">Romance</option>
+            <option value="Fantasia">Fantasia</option>
+            <option value="Ficção Científica">Ficção Científica</option>
+            <option value="Mistério">Mistério</option>
+            <option value="Terror">Terror</option>
+            <option value="Thriller">Thriller</option>
+            <option value="Não-ficção">Não-ficção</option>
+            <option value="Biografia">Biografia</option>
+            <option value="Autoajuda">Autoajuda</option>
+            <option value="Poesia">Poesia</option>
+            <option value="Conto">Conto</option>
+            <option value="HQ/Mangá">HQ / Mangá</option>
+            <option value="Clássico">Clássico</option>
+            <option value="Jovem Adulto">Jovem Adulto</option>
+            <option value="Infanto-Juvenil">Infanto-Juvenil</option>
+            <option value="Outro">Outro</option>
+          </select>
+          <input type="number" id="pages" placeholder="Nº de páginas">
+        </div>
+
+        <!-- Linha 5: Nota e datas -->
+        <div class="form-row">
+          <input type="number" id="rating" placeholder="Nota (0-10)" min="0" max="10">
+          <label class="date-label">Início: <input type="date" id="startDate"></label>
+          <label class="date-label">Fim: <input type="date" id="endDate"></label>
+        </div>
+
+        <!-- Anotações livres -->
+        <textarea id="notes" placeholder="Anotações, citações favoritas..."></textarea>
+
+        <!-- Checkboxes e botão salvar -->
+        <div class="form-footer">
+          <label class="check-label"><input type="checkbox" id="reread"> Pretendo reler</label>
+          <label class="check-label"><input type="checkbox" id="favorite"> ⭐ Favorito</label>
+          <button type="submit" class="btn-save">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       SEÇÃO 1 — BIBLIOTECA (Prateleiras de livros)
+       ======================================================== -->
+  <section class="library" id="library">
+    <div class="content">
+      <div class="conteudo">
+        <!-- Título principal da página -->
+        <h1>Planner Literário</h1>
+        <h2>Biblioteca</h2>
+        <p class="text">Acompanhe aqui suas leituras. Clique no livro para marcar como lido.</p>
+
+        <!-- Input rápido para adicionar livro pela biblioteca -->
+        <div class="container">
+          <div class="input-area">
+            <input id="bookInput" placeholder="Nome do livro">
+            <button class="add-book lib" onclick="addBook()">Adicionar</button>
+          </div>
+        </div>
+
+        <!-- Prateleiras renderizadas dinamicamente pelo JS -->
+        <div id="shelves"></div>
+
+        <!-- Botão para adicionar nova prateleira manual -->
+        <button class="btn-add-shelf" onclick="addShelf()">+ Nova Prateleira</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SEÇÃO 2 — LEITURAS (Cards giratórios com capas dos livros)
+       ======================================================== -->
+  <section class="reader" id="reader">
+    <div class="content">
+      <h2>Leituras</h2>
+      <p class="text">Seus livros cadastrados. Passe o mouse (ou toque) para ver detalhes.</p>
+
+      <!-- Grid de cards gerado pelo JS -->
+      <div id="cardsContainer" class="cards-container"></div>
+
+      <!-- Mensagem exibida quando não há livros cadastrados -->
+      <div id="emptyReader" class="empty-state hidden">
+        <span>📖</span>
+        <p>Nenhum livro cadastrado ainda.<br>Use o botão "Adicionar Livro" no topo!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SEÇÃO 3 — ESTATÍSTICAS (Painel visual de progresso)
+       ======================================================== -->
+  <section id="stats" class="stats-section">
+    <div class="content">
+      <!-- Cabeçalho da seção -->
+      <div class="stats-header">
+        <h2>📊 Minha Leitura</h2>
+        <p class="text">Um panorama do meu ritmo e evolução ao longo do tempo</p>
+      </div>
+
+      <!-- Grade principal: card destaque + cards secundários -->
+      <div class="stats-grid">
+        <!-- Card principal: total no acervo + barra de progresso anual -->
+        <div class="stat-main" id="mainStat"></div>
+
+        <!-- Cards menores: métricas por período -->
+        <div class="stat-card" id="monthStat"></div>
+        <div class="stat-card" id="yearStat"></div>
+        <div class="stat-card" id="pagesStat"></div>
+
+        <!-- Card de gênero mais lido -->
+        <div class="stat-card stat-wide" id="genreStat"></div>
+
+        <!-- Card de média de notas -->
+        <div class="stat-card" id="ratingStat"></div>
+      </div>
+
+      <!-- Histórico mensal: mini gráfico de barras -->
+      <div class="stats-monthly">
+        <h3 class="stats-sub">📅 Histórico Mensal</h3>
+        <div id="monthlyChart" class="monthly-chart"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SEÇÃO 4 — RESUMO (placeholder para futura implementação)
+       ======================================================== -->
+  <section id="resume" class="resume-section">
+    <div class="content">
+      <h2>✍️ Resumos & Citações</h2>
+      <p class="text">Registre pensamentos, citações e resumos das suas leituras.</p>
+
+      <!-- Input para criar uma nova nota/citação -->
+      <div class="resume-add">
+        <select id="resumeBook">
+          <option value="">Selecione um livro...</option>
+        </select>
+        <textarea id="resumeText" placeholder="Escreva uma citação, resumo ou reflexão..."></textarea>
+        <div class="resume-actions">
+          <!-- Tipo de nota: citação ou resumo -->
+          <select id="resumeType">
+            <option value="citacao">💬 Citação</option>
+            <option value="resumo">📝 Resumo</option>
+            <option value="reflexao">💭 Reflexão</option>
+          </select>
+          <button onclick="addResume()" class="btn-resume">Salvar nota</button>
+        </div>
+      </div>
+
+      <!-- Lista de notas salvas, renderizada pelo JS -->
+      <div id="resumeList" class="resume-list"></div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SEÇÃO 5 — PERFIL DO LEITOR
+       ======================================================== -->
+  <section id="profile" class="profile-section">
+    <div class="content">
+      <!-- Bloco de identidade do usuário -->
+      <div class="profile-hero">
+        <!-- Avatar clicável: abre upload de imagem -->
+        <div class="avatar-wrapper" onclick="document.getElementById('avatarInput').click()">
+          <img id="avatarImg" src="https://api.dicebear.com/7.x/bottts-neutral/svg?seed=literaria" alt="Avatar">
+          <div class="avatar-overlay">📷</div>
+        </div>
+        <!-- Input oculto para upload de avatar -->
+        <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="changeAvatar(event)">
+
+        <!-- Dados editáveis do perfil -->
+        <div class="profile-info">
+          <!-- Nome editável ao clicar -->
+          <h2 id="profileName" contenteditable="true" class="editable-field" data-placeholder="Seu nome...">Leitora Literária</h2>
+          <!-- Bio editável -->
+          <p id="profileBio" contenteditable="true" class="editable-field bio-field" data-placeholder="Sua bio...">Apaixonada por livros e histórias ✨</p>
+          <!-- Cidade editável -->
+          <p id="profileCity" contenteditable="true" class="editable-field city-field" data-placeholder="Sua cidade...">📍 Brasil</p>
+        </div>
+      </div>
+
+      <!-- Badges automáticas calculadas pelo JS -->
+      <div class="profile-badges">
+        <h3>🏅 Conquistas</h3>
+        <div id="badgesContainer" class="badges-grid"></div>
+      </div>
+
+      <!-- Gêneros favoritos em formato de nuvem/pílulas -->
+      <div class="profile-genres">
+        <h3>📚 Gêneros que leio</h3>
+        <div id="genreTags" class="genre-tags"></div>
+      </div>
+
+      <!-- Links para redes sociais e literárias -->
+      <div class="profile-social">
+        <h3>🌐 Minhas redes</h3>
+        <div class="social-links">
+          <!-- Cada link abre um prompt de edição via JS -->
+          <button class="social-btn sesc-skoob" onclick="openSocial('skoob')">📚 Skoob</button>
+          <button class="social-btn sesc-goodreads" onclick="openSocial('goodreads')">📖 Goodreads</button>
+          <button class="social-btn sesc-storygraph" onclick="openSocial('storygraph')">📊 StoryGraph</button>
+          <button class="social-btn sesc-instagram" onclick="openSocial('instagram')">📸 Instagram</button>
+          <button class="social-btn sesc-twitter" onclick="openSocial('twitter')">🐦 Twitter / X</button>
+          <button class="social-btn sesc-tiktok" onclick="openSocial('tiktok')">🎵 TikTok</button>
+          <button class="social-btn sesc-blog" onclick="openSocial('blog')">✍️ Blog</button>
+        </div>
+      </div>
+
+      <!-- Botão para salvar todas as alterações do perfil -->
+      <button class="btn-save-profile" onclick="saveProfile()">💾 Salvar Perfil</button>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SEÇÃO 6 — ACERVO (Catálogo completo do usuário)
+       ======================================================== -->
+  <section id="acervo" class="acervo-section">
+    <div class="content">
+      <!-- Cabeçalho da seção -->
+      <div class="acervo-header">
+        <h2>🗂️ Meu Acervo</h2>
+        <p class="text">Catalogue todos os seus livros — físicos e digitais.</p>
+
+        <!-- Resumo automático: classificação da biblioteca -->
+        <div id="acervoClassificacao" class="acervo-badge-row"></div>
+      </div>
+
+      <!-- Formulário de adição ao acervo -->
+      <div class="acervo-form">
+        <div class="form-row">
+          <input type="text" id="acTitle" placeholder="Título *" required>
+          <input type="text" id="acAuthor" placeholder="Autor(a)">
+        </div>
+        <div class="form-row">
+          <input type="text" id="acPublisher" placeholder="Editora">
+          <input type="number" id="acYear" placeholder="Ano">
+          <input type="number" id="acPages" placeholder="Páginas">
+        </div>
+        <div class="form-row">
+          <!-- Tipo: físico ou digital -->
+          <select id="acType">
+            <option value="fisico">📗 Físico</option>
+            <option value="digital">💻 Digital / E-book</option>
+          </select>
+          <!-- Gênero do acervo -->
+          <select id="acGenre">
+            <option value="">Gênero...</option>
+            <option value="Romance">Romance</option>
+            <option value="Fantasia">Fantasia</option>
+            <option value="Ficção Científica">Ficção Científica</option>
+            <option value="Mistério">Mistério</option>
+            <option value="Terror">Terror</option>
+            <option value="Thriller">Thriller</option>
+            <option value="Não-ficção">Não-ficção</option>
+            <option value="Biografia">Biografia</option>
+            <option value="Autoajuda">Autoajuda</option>
+            <option value="Poesia">Poesia</option>
+            <option value="Conto">Conto</option>
+            <option value="HQ/Mangá">HQ / Mangá</option>
+            <option value="Clássico">Clássico</option>
+            <option value="Jovem Adulto">Jovem Adulto</option>
+            <option value="Infanto-Juvenil">Infanto-Juvenil</option>
+            <option value="Outro">Outro</option>
+          </select>
+          <!-- Status de leitura no acervo -->
+          <select id="acStatus">
+            <option value="nao_lido">📌 Não lido</option>
+            <option value="lido">✅ Lido</option>
+            <option value="lendo">📖 Lendo</option>
+            <option value="pausado">⏸️ Pausado</option>
+          </select>
+        </div>
+        <!-- Checkbox de favorito + botão de adicionar -->
+        <div class="form-footer">
+          <label class="check-label"><input type="checkbox" id="acFavorite"> ⭐ Favorito</label>
+          <button onclick="addToAcervo()" class="add-book lib">Adicionar ao Acervo</button>
+        </div>
+      </div>
+
+      <!-- Painel de métricas do acervo -->
+      <div class="acervo-stats" id="acervoStats"></div>
+
+      <!-- Filtros do acervo -->
+      <div class="acervo-filters">
+        <h3>🔍 Filtrar acervo</h3>
+        <div class="filters-row">
+          <!-- Filtro por tipo de livro -->
+          <select id="filterType" onchange="renderAcervo()">
+            <option value="">Todos os tipos</option>
+            <option value="fisico">📗 Físico</option>
+            <option value="digital">💻 Digital</option>
+          </select>
+          <!-- Filtro por gênero -->
+          <select id="filterGenre" onchange="renderAcervo()">
+            <option value="">Todos os gêneros</option>
+            <option value="Romance">Romance</option>
+            <option value="Fantasia">Fantasia</option>
+            <option value="Ficção Científica">Ficção Científica</option>
+            <option value="Mistério">Mistério</option>
+            <option value="Terror">Terror</option>
+            <option value="Thriller">Thriller</option>
+            <option value="Não-ficção">Não-ficção</option>
+            <option value="Biografia">Biografia</option>
+            <option value="Autoajuda">Autoajuda</option>
+            <option value="Poesia">Poesia</option>
+            <option value="Conto">Conto</option>
+            <option value="HQ/Mangá">HQ / Mangá</option>
+            <option value="Clássico">Clássico</option>
+            <option value="Jovem Adulto">Jovem Adulto</option>
+            <option value="Infanto-Juvenil">Infanto-Juvenil</option>
+            <option value="Outro">Outro</option>
+          </select>
+          <!-- Filtro por status de leitura -->
+          <select id="filterStatus" onchange="renderAcervo()">
+            <option value="">Todos os status</option>
+            <option value="nao_lido">Não lido</option>
+            <option value="lido">Lido</option>
+            <option value="lendo">Lendo</option>
+            <option value="pausado">Pausado</option>
+          </select>
+          <!-- Campo de busca por autor ou editora -->
+          <input id="filterSearch" placeholder="Buscar autor, editora..." oninput="renderAcervo()">
+          <!-- Toggle favoritos -->
+          <label class="check-label filter-fav">
+            <input type="checkbox" id="filterFavorite" onchange="renderAcervo()"> Só favoritos ⭐
+          </label>
+        </div>
+      </div>
+
+      <!-- Lista/tabela do acervo, renderizada pelo JS -->
+      <div id="acervoList" class="acervo-list"></div>
+    </div>
+  </section>
+
+  <!-- Rodapé com informações do autor e contatos profissionais -->
+  <footer class="site-footer">  
+    <div class="footer-content">
+      <!-- Coluna 1: identidade do produto -->
+      <div class="footer-column footer-brand">
+        <p><strong>Planner Literário Pessoal</strong></p>
+        <p>Desenvolvido por Tainara Martins e auxílio do Claude</p>
+        <p>Teste de vibe coding</p>
+      </div>
+
+      <!-- Coluna 2: links de contato profissionais -->
+      <div class="footer-column footer-links">
+        <p><strong>Contato</strong></p>
+        <div class="footer-contact-icons">
+          <a href="mailto:tainaramartinscarvalho@gmail.com" class="footer-icon-link" aria-label="Enviar e-mail para Tainara Martins" rel="noopener">
+            <img src="assets/forward_to_inbox_24dp_38148B_FILL0_wght400_GRAD0_opsz24.svg" alt="" aria-hidden="true">
+            <span class="sr-only">Email</span>
+          </a>
+          <a href="https://www.linkedin.com/in/tainara-martins-carvalho/" target="_blank" class="footer-icon-link" aria-label="Perfil LinkedIn de Tainara Martins" rel="noopener">
+            <img src="assets/linkedin-logo-svgrepo-com.svg" alt="" aria-hidden="true">
+            <span class="sr-only">LinkedIn</span>
+          </a>
+          <a href="https://www.instagram.com/dfe.tainara_m" target="_blank" class="footer-icon-link" aria-label="Instagram de Tainara Martins" rel="noopener">
+            <img src="assets/instagram-svgrepo-com.svg" alt="" aria-hidden="true">
+            <span class="sr-only">Instagram</span>
+          </a>
+          <a href="https://github.com/tainaramartins" target="_blank" class="footer-icon-link" aria-label="GitHub de Tainara Martins" rel="noopener">
+            <img src="assets/github-svgrepo-com.svg" alt="" aria-hidden="true">
+            <span class="sr-only">GitHub</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Coluna 3: localização e posicionamento profissional -->
+      <div class="footer-column footer-location">
+        <p><strong>Localização</strong></p>
+        <p>📍São Domingos do Prata, MG - Brasil</p>
+        <p>Organização, leitura e criatividade em cada projeto.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script principal da aplicação -->
+  <script src="script.js"></script>
+</body>
+</html>
